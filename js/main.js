@@ -7,13 +7,13 @@ const TYPES_OF_HOUSING = [
   'hotel',
 ];
 
-const CHECKIN_TIMES = [
+const CHECK_IN_TIME = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECKOUT_TIMES = [
+const CHECK_OUT_TIME = [
   '12:00',
   '13:00',
   '14:00',
@@ -34,31 +34,40 @@ const ALL_PHOTOS = [
 ];
 
 const SIMILAR_COUNT = 10;
+const LATITUDE = {
+  min: 35.65000,
+  max: 35.70000,
+};
+const LONGITUDE = {
+  min: 139.70000,
+  max: 139.80000,
+};
 
 const createAd = () => ({
   author: {
     avatar: `img/avatars/user0${getRandomPositiveInteger(1, 8)}.png`,
   },
+  location: {
+    lat: randomLocation.lat,
+    lng: randomLocation.lng,
+  },
   offer: {
     title: 'Заголовок объявления',
-    address: `Широта: ${getRandomPositiveFloat(35.65000,  35.70000, 5)}, Долгота: ${getRandomPositiveFloat(139.70000, 139.80000, 5)}`,
+    address: `${location.lat  }, ${  location.lng}`, //строка — адрес предложения. Для простоты пусть пока составляется из географических координат по маске {{location.x}}, {{location.y}}.
     price: getRandomPositiveInteger(10000, 1000000),
     type: getRandomArrayElement(TYPES_OF_HOUSING),
     rooms: getRandomPositiveInteger(1, 100),
     guests: getRandomPositiveInteger(1, 100),
-    checkin: getRandomArrayElement(CHECKIN_TIMES),
-    checkout: getRandomArrayElement(CHECKOUT_TIMES),
+    checkin: getRandomArrayElement(CHECK_IN_TIME),
+    checkout: getRandomArrayElement(CHECK_OUT_TIME),
     features: createArr(ALL_FEATURES, 5),
-    description: 'Описаие объявления',
+    description: 'Описание объявления',
     photos: createArr(ALL_PHOTOS, 3),
-  },
-  location: {
-    lat: getRandomPositiveFloat(35.65000,  35.70000, 5),
-    lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
   },
 });
 
 
-const similarAd = new Array(SIMILAR_COUNT).fill(null).map(() => createAd());
+const similarAd  = new Array(SIMILAR_COUNT).fill(null).map(createAd);
 
 similarAd;
+
