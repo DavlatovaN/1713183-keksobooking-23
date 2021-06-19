@@ -70,7 +70,7 @@ const createAd= function () {
       description: 'Описание объявления',
       photos: createArr(ALL_PHOTOS, 3),
     },
-});
+  }};
 
 
 const similarAd = function (similar_count) {
