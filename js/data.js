@@ -81,6 +81,5 @@ const createAd = function () {
 const similarAd = function (similar_count) {
   return new Array(similar_count).fill(null).map(createAd);
 }
-similarAd;
 
-export {createAd};
+export {createAd,similarAd};
