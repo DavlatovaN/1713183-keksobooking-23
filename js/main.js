@@ -1,4 +1,6 @@
 import {similarAd} from './data.js';
+import './card.js';
+
 
 const SIMILAR_COUNT = 10;
 

@@ -1,13 +1,30 @@
 /* eslint-disable no-undef */
 import {getRandomValueFloat, getRandomPositiveInteger, getRandomArrayElement, createRandomArray} from './utils.js';
 
+//тип объекта
 const TYPES_OF_HOUSING = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel',
+  {
+    id: 'bungalow',
+    display: 'Бунгало',
+  },
+  {
+    id: 'flat',
+    display: 'Квартира',
+  },
+  {
+    id: 'hotel',
+    display: 'Отель',
+  },
+  {
+    id: 'house',
+    display: 'Дом',
+  },
+  {
+    id: 'palace',
+    display: 'Дворец',
+  },
 ];
+
 
 const CHECK_IN_TIME = [
   '12:00',
@@ -15,6 +32,7 @@ const CHECK_IN_TIME = [
   '14:00',
 ];
 
+//список возможных удобств
 const ALL_FEATURES = [
   'wifi',
   'dishwasher',
@@ -22,7 +40,7 @@ const ALL_FEATURES = [
   'washer',
   'elevator',
 ];
-
+//список фото объектов
 const ALL_PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
@@ -32,25 +50,23 @@ const ALL_PHOTOS = [
 
 const MIN_PRICE = 10000;
 const MAX_PRICE = 100000;
-
 const MIN_ROOM = 1;
 const MAX_ROOM = 100;
-
 const MIN_GUEST = 1;
 const MAX_GUEST = 100;
-
 const SIMILAR_COUNT = 10;
 
-// функция получения случайных координат для объекта
 
+
+// функция получения случайных координат для объекта
 const getRandomLocation = function () {
   return {
     lat: getRandomValueFloat(35.65000, 35.70000, 5),
     lng: getRandomValueFloat(139.70000, 139.80000, 5),
   };
 };
-// функция генерации "объявления"
 
+// функция генерации "объявления"
 const createAd = function () {
   const randomLocation = getRandomLocation();
   return {
