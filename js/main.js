@@ -1,5 +1,6 @@
 import {createAds} from './data.js';
 import {createCard, renderCard} from './card.js';
+
 import {checkValidity} from './form.js';
 
 
