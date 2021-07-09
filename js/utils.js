@@ -22,4 +22,3 @@ const createRandomArray = ([...source], maxLength) => Array.from(
 
 export {getRandomValueFloat, getRandomPositiveInteger, getRandomArrayElement, createRandomArray};
 
-
