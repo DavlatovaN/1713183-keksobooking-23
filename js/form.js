@@ -3,18 +3,85 @@ const priceInput = document.querySelector('#price');
 const roomNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 const capacitySelectOptions = document.querySelectorAll('#capacity option');
+const filtersForm = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
+const filtersFormElements = filtersForm.children;
+const adFormElements = adForm.children;
+const typeOfHousingSelect = document.querySelector('#type');
+const timeinSelect = document.querySelector('#timein');
+const timeoutSelect = document.querySelector('#timeout');
+const addressInput = document.querySelector('#address');
+
+// Неактивное состояние формы
+function inactivateForm() {
+  filtersForm.classList.add('map__filters--disabled');
+  adForm.classList.add('ad-form--disabled');
+  for (let i = 0; i < filtersFormElements.length; i++) {
+    filtersFormElements[i].disabled = true;
+  }
+  for (let i = 0; i < adFormElements.length; i++) {
+    adFormElements[i].disabled = true;
+  }
+}
+
+// Активное состояние формы
+function activateForm() {
+  filtersForm.classList.remove('map__filters--disabled');
+  adForm.classList.remove('ad-form--disabled');
+  for (let i = 0; i < filtersFormElements.length; i++) {
+    filtersFormElements[i].disabled = false;
+  }
+  for (let i = 0; i < adFormElements.length; i++) {
+    adFormElements[i].disabled = false;
+  }
+}
+
+// Синхронизация типа жилья с минимальной ценой
+function changeMinPrice() {
+  if (typeOfHousingSelect.value === 'bungalow') {
+    priceInput.min = 0;
+    priceInput.placeholder = '0';
+  } else if (typeOfHousingSelect.value === 'flat') {
+    priceInput.min = 1000;
+    priceInput.placeholder = '1000';
+  } else if (typeOfHousingSelect.value === 'hotel') {
+    priceInput.min = 3000;
+    priceInput.placeholder = '3000';
+  } else if (typeOfHousingSelect.value === 'house') {
+    priceInput.min = 5000;
+    priceInput.placeholder = '5000';
+  } else if (typeOfHousingSelect.value === 'palace') {
+    priceInput.min = 10000;
+    priceInput.placeholder = '10000';
+  }
+}
+
+typeOfHousingSelect.addEventListener('change', changeMinPrice);
+
+// Синхронизация времени заезда и выезда
+function changeTimeoutSelect() {
+  timeoutSelect.value = timeinSelect.value;
+}
+
+function changeTimeinSelect() {
+  timeinSelect.value = timeoutSelect.value;
+}
+
+timeinSelect.addEventListener('change', changeTimeoutSelect);
+timeoutSelect.addEventListener('change', changeTimeinSelect);
+
 
 // Валидация поля заголовка
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
-function checkValidityTitle () {
+function checkValidityTitle() {
   const valueLength = titleInput.value.length;
 
   if (valueLength < MIN_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
+    titleInput.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} симв.`);
   } else if (valueLength > MAX_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Удалите лишние ${  valueLength - MAX_TITLE_LENGTH } симв.`);
+    titleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} симв.`);
   } else {
     titleInput.setCustomValidity('');
   }
@@ -23,13 +90,13 @@ function checkValidityTitle () {
 }
 
 // Валидация поля цены за ночь
-function checkValidityPrice () {
+function checkValidityPrice() {
   const valuePrice = priceInput.value;
 
   if (valuePrice < +priceInput.min) {
-    priceInput.setCustomValidity(`Минимальная цена ${ priceInput.min } руб.`);
+    priceInput.setCustomValidity(`Минимальная цена ${priceInput.min} руб.`);
   } else if (valuePrice > +priceInput.max) {
-    priceInput.setCustomValidity(`Максимальная цена ${ priceInput.max } руб.`);
+    priceInput.setCustomValidity(`Максимальная цена ${priceInput.max} руб.`);
   } else {
     priceInput.setCustomValidity('');
   }
@@ -38,7 +105,7 @@ function checkValidityPrice () {
 }
 
 // Валидация количества комнат и количества мест
-function checkValidityRoomNumberCapacity () {
+function checkValidityRoomNumberCapacity() {
   const numberOfRooms = roomNumberSelect.value;
   capacitySelectOptions.forEach((element) => {
     element.disabled = true;
@@ -74,11 +141,15 @@ function checkValidityRoomNumberCapacity () {
   }
 }
 
-function checkValidity () {
+function checkValidity() {
   titleInput.addEventListener('input', checkValidityTitle);
   priceInput.addEventListener('input', checkValidityPrice);
   document.addEventListener('DOMContentLoaded', checkValidityRoomNumberCapacity); //вызывается для того что бы функция сработала сразу после загрузки страницы
   roomNumberSelect.addEventListener('change', checkValidityRoomNumberCapacity);
 }
 
-export {checkValidity};
+const setAddress = ({lat, lng}) => {
+  addressInput.value = `Широта: ${lat.toFixed(5)}, Долгота: ${lng.toFixed(5)}`;
+};
+
+export {checkValidity, inactivateForm, activateForm, setAddress};
