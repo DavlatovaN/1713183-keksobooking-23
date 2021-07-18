@@ -66,7 +66,7 @@ const createAd = function () {
       title: 'Заголовок объявления',
       address: `${randomLocation.lat}, ${randomLocation.lng}`, //строка — адрес предложения. Для простоты пусть пока составляется из географических координат по маске {{location.x}}, {{location.y}}.
       price: getRandomPositiveInteger(MIN_PRICE, MAX_PRICE),//число — стоимость. Случайное целое положительное число.
-      type: getRandomArrayElement(TYPES).display,//строка — одно из пяти фиксированных значений: palace, flat, house, bungalow или hotel.
+      type: getRandomArrayElement(TYPES),//строка — одно из пяти фиксированных значений: palace, flat, house, bungalow или hotel.
       rooms: getRandomPositiveInteger(MIN_ROOM, MAX_ROOM), //число — количество комнат. Случайное целое положительное число.
       guests: getRandomPositiveInteger(MIN_GUEST, MAX_GUEST),  //число — количество гостей, которое можно разместить. Случайное целое положительное число.
       checkin: getRandomArrayElement(CHECK_IN_TIME),//строка — одно из трёх фиксированных значений: 12:00, 13:00 или 14:00.

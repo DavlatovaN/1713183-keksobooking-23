@@ -149,7 +149,7 @@ function checkValidity() {
 }
 
 const setAddress = ({lat, lng}) => {
-  addressInput.value = `Широта: ${lat.toFixed(5)}, Долгота: ${lng.toFixed(5)}`;
+  addressInput.value =  `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
-export {checkValidity, inactivateForm, activateForm, setAddress};
+  export {checkValidity, inactivateForm, activateForm, setAddress};
