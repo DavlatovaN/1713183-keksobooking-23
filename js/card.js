@@ -34,22 +34,28 @@ function createCard(object) {
       item.remove();
     }
   });
+}
 
-  const photos = cardElement.querySelector('.popup__photos');
-  photos.innerHTML = '';
+else
+{
+  cardElement.querySelector('.popup__features').style.display = 'none';
+}
 
-  // Добавляет фото
-  object.offer.photos.forEach((photo) => {
-    const photoCardElement = document.createElement('img');
-    photoCardElement.classList.add('popup__photo');
-    photoCardElement.width = 45;
-    photoCardElement.height = 40;
-    photoCardElement.alt = 'Фотография жилья';
-    photoCardElement.src = photo;
-    cardElement.querySelector('.popup__photos').appendChild(photoCardElement);
-  });
+const photos = cardElement.querySelector('.popup__photos');
+photos.innerHTML = '';
 
-  return cardElement;
+// Добавляет фото
+object.offer.photos.forEach((photo) => {
+  const photoCardElement = document.createElement('img');
+  photoCardElement.classList.add('popup__photo');
+  photoCardElement.width = 45;
+  photoCardElement.height = 40;
+  photoCardElement.alt = 'Фотография жилья';
+  photoCardElement.src = photo;
+  cardElement.querySelector('.popup__photos').appendChild(photoCardElement);
+});
+
+return cardElement;
 }
 
 const renderCard = (card) => {
