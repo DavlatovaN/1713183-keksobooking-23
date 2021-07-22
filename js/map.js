@@ -1,16 +1,17 @@
 import {activateForm, setAddress} from './form.js';
 import {createCard} from './card.js';
+import {getData} from './api.js';
+
+const SIMILAR_MARKER_COUNT = 10;
 
 const TokyoCenter = {
-  lat: 35.6938,
-  lng: 139.7034,
+  lat: 35.68168,
+  lng: 139.75387,
 };
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    activateForm(); //Почему не работает, не могу разобраться?
-  })
-  .setView(TokyoCenter, 10);
+  .on('load', getData)
+  .setView(TokyoCenter, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -26,10 +27,7 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  {
-    lat: 35.6895,
-    lng: 139.692,
-  },
+  TokyoCenter,
   {
     draggable: true,
     icon: mainPinIcon,
@@ -38,11 +36,12 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-setAddress(TokyoCenter);
+mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
   setAddress(evt.target.getLatLng());
 });
+
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',
@@ -50,7 +49,9 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-function addOneOffer(createAd) {
+const markerGroup = L.layerGroup().addTo(map);
+
+const addOneOffer = (createAd) => {
   const pinMarker = L.marker(
     {
       lat: createAd.location.lat,
@@ -62,16 +63,27 @@ function addOneOffer(createAd) {
   );
 
   pinMarker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(
       createCard(createAd),
     );
-}
+};
 
-function addAllOffers(createAds) {
-  createAds.forEach((element) => {
+const addAllOffers = (createAds) => {
+  createAds.slice(0, SIMILAR_MARKER_COUNT).forEach((element) => {
     addOneOffer(element);
   });
-}
+};
 
-export {addAllOffers,TokyoCenter};
+const clearMarkers = () => {
+  markerGroup.clearLayers();
+};
+
+const resetMap = () => {
+  clearMarkers();
+  mainPinMarker.setLatLng(TokyoCenter);
+  map.setView(TokyoCenter, 13);
+  getData();
+};
+
+export {addAllOffers, TokyoCenter, clearMarkers, resetMap};

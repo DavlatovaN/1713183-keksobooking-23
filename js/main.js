@@ -1,14 +1,10 @@
-import {createAds} from './data.js';
-import {checkValidity} from './form.js';
-import {addAllOffers} from './map.js';
-import {getData, sendData} from './apii.js';
+/* eslint-disable no-unused-vars */
+import {checkValidity, inactivateForm} from './form.js';
+import {sendData} from './apii.js';
 
 
-const COUNT = 10;
-const array = createAds(COUNT);
 checkValidity();
-addAllOffers(createAds());
-addAllOffers(array);
 
-getData();
+inactivateForm();
+
 sendData();
