@@ -1,6 +1,10 @@
 import {showAlert} from './utils.js';
 import {addAllOffers} from './map.js';
 import {adForm, setAddress} from './form.js';
+import {setChangeCallback, getFilteredAds} from './filter.js';
+import {debounce} from './utils/debounce.js';
+
+const RERENDER_DELAY = 500;
 
 const getData = () => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
@@ -12,11 +16,17 @@ const getData = () => {
       }
     }).then((ads) => {
     addAllOffers(ads);
+    const addFilteredAds = () => {
+      clearMarkers();
+      addAllOffers(getFilteredAds(ads));
+    };
+    setChangeCallback(debounce(addFilteredAds, RERENDER_DELAY));
   })
     .catch(() => {
       showAlert('Данные не загружены', 'red', 0);
     });
 };
+
 
 const sendData = () => {
   adForm.addEventListener('submit', (evt) => {
@@ -32,17 +42,13 @@ const sendData = () => {
       },
     ).then((response) => {
       if (response.ok) {
-        showAlert('Форма отправлена.', 'green', '1500px');
-        adForm.reset();
-        setAddress({
-          lat: 35.6938,
-          lng: 139.7034,
-        });
+        resetForm();
+        showSuccessCard();
       } else {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red', '1500px');
+        showErrorCard();
       }
     }).catch(() => {
-      showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red', '1500px');
+      showErrorCard();
     });
   });
 };
