@@ -170,4 +170,5 @@ const resetForm = () => {
 
 resetButton.addEventListener('click', resetForm);
 
-export {checkValidity, inactivateForm, activateForm, setAddress, adForm};
+
+export {checkValidity, inactivateForm, activateForm, resetForm, setAddress, adForm};

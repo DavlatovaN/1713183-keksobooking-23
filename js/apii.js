@@ -1,27 +1,21 @@
-import {showAlert} from './utils.js';
-import {addAllOffers} from './map.js';
-import {adForm, setAddress} from './form.js';
+import {showAlert, showErrorCard, showSuccessCard} from './utils.js';
+import {adForm, setAddress, resetForm} from './form.js';
 import {setChangeCallback, getFilteredAds} from './filter.js';
 import {debounce} from './utils/debounce.js';
 
 const RERENDER_DELAY = 500;
+const SERVER_GET_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 
-const getData = () => {
-  fetch('https://23.javascript.pages.academy/keksobooking/data')
+const getData = (callback) => {
+  fetch(SERVER_GET_URL)
     .then((response) => {
       if (response.ok) {
         return response.json();
       } else {
         showAlert('Данные не загружены', 'red', 0);
       }
-    }).then((ads) => {
-    addAllOffers(ads);
-    const addFilteredAds = () => {
-      clearMarkers();
-      addAllOffers(getFilteredAds(ads));
-    };
-    setChangeCallback(debounce(addFilteredAds, RERENDER_DELAY));
-  })
+    })
+    .then((ads) => callback(ads))
     .catch(() => {
       showAlert('Данные не загружены', 'red', 0);
     });
@@ -33,7 +27,6 @@ const sendData = () => {
     evt.preventDefault();
 
     const formData = new FormData(evt.target);
-
     fetch(
       'https://23.javascript.pages.academy/keksobooking',
       {

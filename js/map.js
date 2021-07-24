@@ -1,6 +1,6 @@
 import {activateForm, setAddress} from './form.js';
 import {createCard} from './card.js';
-import {getData} from './api.js';
+import {getData} from './apii.js';
 
 const SIMILAR_MARKER_COUNT = 10;
 
@@ -10,8 +10,13 @@ const TokyoCenter = {
 };
 
 const map = L.map('map-canvas')
-  .on('load', getData)
-  .setView(TokyoCenter, 13);
+  .on('load', async () => {
+    await getData((offers) => {
+      addAllOffers(offers);
+      setChangeCallback(debounce(() => addFilteredAds(offers), RERENDER_DELAY));
+    });
+    activateForm();
+  })
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -83,7 +88,15 @@ const resetMap = () => {
   clearMarkers();
   mainPinMarker.setLatLng(TokyoCenter);
   map.setView(TokyoCenter, 13);
-  getData();
+  getData((offers) => {
+    addAllOffers(offers);
+    setChangeCallback(debounce(() => addFilteredAds(offers), RERENDER_DELAY));
+  });
+};
+
+const addFilteredAds = (offers) => {
+  clearMarkers();
+  addAllOffers(getFilteredAds(offers));
 };
 
 export {addAllOffers, TokyoCenter, clearMarkers, resetMap};
